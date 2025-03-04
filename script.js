@@ -6,226 +6,399 @@ document.addEventListener('DOMContentLoaded', function() {
     once: true
   });
   
-  // Slide functionality
-  let slides = document.querySelectorAll('.slide');
-  let currentSlide = 0;
-  const totalSlides = slides.length;
+  // DOM Elements
+  const slides = document.querySelectorAll('.slide');
   const prevBtn = document.getElementById('prev-btn');
   const nextBtn = document.getElementById('next-btn');
-  const slideCounter = document.getElementById('slide-counter');
-  const slideIndicators = document.querySelector('.slide-indicators');
-  const progressBar = document.getElementById('progress-bar');
+  const slideCounter = document.querySelector('.slide-counter');
+  const progressBar = document.querySelector('.progress-bar');
+  const fullscreenToggle = document.querySelector('.fullscreen-toggle');
+  const speakerNotesButton = document.querySelector('.speaker-notes-button');
+  const speakerNotesPanel = document.querySelector('.speaker-notes-panel');
+  const speakerNotesCloseBtn = document.querySelector('.speaker-notes-panel .close-btn');
   
-  // Initialize slide counter
-  updateSlideCounter();
+  // State
+  let currentSlideIndex = 0;
+  const totalSlides = slides.length;
   
-  // Create slide indicators
-  createSlideIndicators();
-  
-  // Show first slide
-  showSlide(currentSlide);
-  
-  // Event listeners for navigation
-  prevBtn.addEventListener('click', prevSlide);
-  nextBtn.addEventListener('click', nextSlide);
-  
-  // Keyboard navigation
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-      nextSlide();
-    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-      prevSlide();
-    } else if (e.key === 'f' || e.key === 'F') {
-      toggleFullscreen();
-    }
-  });
-  
-  // Fullscreen toggle
-  const fullscreenToggle = document.getElementById('fullscreen-toggle');
-  fullscreenToggle.addEventListener('click', toggleFullscreen);
-  
-  // Functions
-  function updateSlideCounter() {
-    slideCounter.textContent = `${currentSlide + 1}/${totalSlides}`;
-  }
-  
-  function createSlideIndicators() {
+  // Initialize Slide Indicators
+  const slideIndicatorsContainer = document.querySelector('.slide-indicators');
+  if (slideIndicatorsContainer) {
     for (let i = 0; i < totalSlides; i++) {
       const indicator = document.createElement('div');
-      indicator.className = 'indicator';
-      indicator.addEventListener('click', function() {
-        goToSlide(i);
-      });
-      slideIndicators.appendChild(indicator);
+      indicator.classList.add('indicator');
+      if (i === 0) indicator.classList.add('active');
+      indicator.addEventListener('click', () => goToSlide(i));
+      slideIndicatorsContainer.appendChild(indicator);
     }
   }
   
-  function updateSlideIndicators() {
-    const indicators = document.querySelectorAll('.indicator');
-    indicators.forEach((indicator, index) => {
-      if (index === currentSlide) {
-        indicator.classList.add('active');
-      } else {
-        indicator.classList.remove('active');
-      }
-    });
-  }
-  
-  function updateProgressBar() {
-    const progress = ((currentSlide + 1) / totalSlides) * 100;
-    progressBar.style.width = `${progress}%`;
-  }
-  
+  // Functions
   function showSlide(index) {
     // Hide all slides
-    gsap.to(slides, {
-      opacity: 0,
-      duration: 0.3,
-      ease: "power2.inOut",
-      onComplete: function() {
-        slides.forEach(slide => {
-          slide.classList.remove('active');
-        });
-        // Show the current slide
-        slides[index].classList.add('active');
-        gsap.to(slides[index], {
-          opacity: 1,
-          duration: 0.5,
-          ease: "power2.inOut",
-          onComplete: function() {
-            // Once the slide is visible, animate its content
-            animateSlideContent(slides[index]);
-          }
-        });
-      }
+    slides.forEach(slide => {
+      slide.classList.remove('active');
     });
     
-    // Update UI
-    updateSlideCounter();
-    updateSlideIndicators();
-    updateProgressBar();
-  }
-  
-  function animateSlideContent(slide) {
-    // Animate headings
-    gsap.from(slide.querySelectorAll('h1, h2, h3'), {
-      y: 20,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: "power2.out"
-    });
+    // Show the current slide
+    slides[index].classList.add('active');
     
-    // Animate chart containers
-    gsap.from(slide.querySelectorAll('.chart-container'), {
-      scale: 0.9,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.3,
-      ease: "power2.out"
-    });
-    
-    // Animate other elements
-    gsap.from(slide.querySelectorAll('.stat-highlights, .key-insights, .experience-opportunity, .revenue-container, .recommendations, .napkin-container, .timeline-container'), {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.5,
-      stagger: 0.2,
-      ease: "power2.out"
-    });
-  }
-  
-  function nextSlide() {
-    if (currentSlide < totalSlides - 1) {
-      currentSlide++;
-      showSlide(currentSlide);
+    // Update indicators
+    const indicators = document.querySelectorAll('.indicator');
+    if (indicators.length > 0) {
+      indicators.forEach(ind => ind.classList.remove('active'));
+      indicators[index].classList.add('active');
     }
-  }
-  
-  function prevSlide() {
-    if (currentSlide > 0) {
-      currentSlide--;
-      showSlide(currentSlide);
+    
+    // Update progress bar
+    const progress = ((index + 1) / totalSlides) * 100;
+    progressBar.style.width = `${progress}%`;
+    
+    // Update slide counter
+    if (slideCounter) {
+      slideCounter.textContent = `${index + 1} / ${totalSlides}`;
     }
+    
+    // Update speaker notes
+    updateSpeakerNotes(index);
   }
   
   function goToSlide(index) {
-    if (index >= 0 && index < totalSlides) {
-      currentSlide = index;
-      showSlide(currentSlide);
+    // Handle out of bounds
+    if (index < 0) {
+      currentSlideIndex = totalSlides - 1;
+    } else if (index >= totalSlides) {
+      currentSlideIndex = 0;
+    } else {
+      currentSlideIndex = index;
+    }
+    
+    showSlide(currentSlideIndex);
+  }
+  
+  function nextSlide() {
+    goToSlide(currentSlideIndex + 1);
+    createSparkleEffect(nextBtn);
+  }
+  
+  function prevSlide() {
+    goToSlide(currentSlideIndex - 1);
+    createSparkleEffect(prevBtn);
+  }
+  
+  function updateSpeakerNotes(slideIndex) {
+    // If speaker notes panel exists
+    if (speakerNotesPanel) {
+      // Clear current notes
+      const notesContent = speakerNotesPanel.querySelector('.notes-content');
+      if (notesContent) {
+        // Try to get notes from current slide
+        const currentSlide = slides[slideIndex];
+        const slideNotes = currentSlide.getAttribute('data-notes');
+        
+        if (slideNotes) {
+          // Convert to HTML with proper formatting
+          let formattedHtml = '';
+          const lines = slideNotes.split('\n');
+          let inList = false;
+          
+          lines.forEach(line => {
+            line = line.trim();
+            if (!line) return;
+            
+            // Check if line starts with bullet or dash
+            if (line.startsWith('•') || line.startsWith('-')) {
+              if (!inList) {
+                formattedHtml += '<ul>';
+                inList = true;
+              }
+              // Remove the bullet/dash and add as list item
+              formattedHtml += `<li>${line.substring(1).trim()}</li>`;
+            } else {
+              // If we were in a list and now we're not, close the list
+              if (inList) {
+                formattedHtml += '</ul>';
+                inList = false;
+              }
+              formattedHtml += `<p>${line}</p>`;
+            }
+          });
+          
+          // Close list if we ended while still in a list
+          if (inList) {
+            formattedHtml += '</ul>';
+          }
+          
+          notesContent.innerHTML = formattedHtml;
+        } else {
+          notesContent.innerHTML = '<p>No speaker notes for this slide.</p>';
+        }
+      }
     }
   }
   
   function toggleFullscreen() {
-    const container = document.querySelector('.slide-container');
     if (!document.fullscreenElement) {
-      container.requestFullscreen().catch(err => {
+      document.documentElement.requestFullscreen().catch(err => {
         console.error(`Error attempting to enable fullscreen: ${err.message}`);
       });
       fullscreenToggle.innerHTML = '<i class="fas fa-compress"></i>';
     } else {
-      document.exitFullscreen();
-      fullscreenToggle.innerHTML = '<i class="fas fa-expand"></i>';
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+        fullscreenToggle.innerHTML = '<i class="fas fa-expand"></i>';
+      }
+    }
+    createSparkleEffect(fullscreenToggle);
+  }
+  
+  function toggleSpeakerNotes() {
+    if (speakerNotesPanel) {
+      speakerNotesPanel.classList.toggle('active');
+      createSparkleEffect(speakerNotesButton);
     }
   }
   
-  // Clickable stats with source info
-  const clickableStats = document.querySelectorAll('.clickable-stat');
-  const statModal = document.getElementById('stat-modal');
-  const closeModal = document.getElementById('close-modal');
-  const modalTitle = document.querySelector('.modal-title');
-  const modalText = document.querySelector('.modal-text');
-  const modalSource = document.querySelector('.modal-source');
+  function closeSpeakerNotes() {
+    if (speakerNotesPanel) {
+      speakerNotesPanel.classList.remove('active');
+    }
+  }
   
-  clickableStats.forEach(stat => {
-    stat.addEventListener('click', function() {
-      // Get the statistic text
-      const statText = this.textContent;
+  function createSparkleEffect(element) {
+    // Create sparkle elements
+    const numSparkles = 5;
+    
+    for (let i = 0; i < numSparkles; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.classList.add('sparkle');
       
-      // Find the citation based on the text
-      const citation = sourceCitations[findCitationKey(statText)];
+      // Position randomly around the element
+      const rect = element.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
       
-      if (citation) {
-        modalTitle.textContent = "Source Information";
-        modalText.textContent = citation.detail || statText;
-        
-        if (citation.source) {
-          modalSource.innerHTML = `<strong>Source:</strong> ${citation.source}`;
-          if (citation.link) {
-            modalSource.innerHTML += ` <a href="${citation.link}" target="_blank"><i class="fas fa-external-link-alt"></i></a>`;
+      // Random position in a circle around the element
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 20 + Math.random() * 30;
+      const x = centerX + Math.cos(angle) * distance;
+      const y = centerY + Math.sin(angle) * distance;
+      
+      sparkle.style.left = `${x}px`;
+      sparkle.style.top = `${y}px`;
+      
+      // Add to body
+      document.body.appendChild(sparkle);
+      
+      // Remove after animation completes
+      setTimeout(() => {
+        sparkle.remove();
+      }, 1000);
+    }
+  }
+  
+  // Event Listeners
+  if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+  if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+  if (fullscreenToggle) fullscreenToggle.addEventListener('click', toggleFullscreen);
+  if (speakerNotesButton) speakerNotesButton.addEventListener('click', toggleSpeakerNotes);
+  if (speakerNotesCloseBtn) speakerNotesCloseBtn.addEventListener('click', closeSpeakerNotes);
+  
+  // Keyboard Navigation
+  document.addEventListener('keydown', function(e) {
+    switch(e.key) {
+      case 'ArrowRight':
+      case ' ':
+        nextSlide();
+        break;
+      case 'ArrowLeft':
+        prevSlide();
+        break;
+      case 'f':
+        toggleFullscreen();
+        break;
+      case 'n':
+        toggleSpeakerNotes();
+        break;
+      case 'Escape':
+        closeSpeakerNotes();
+        break;
+    }
+  });
+  
+  // Initialize chart data loading and rendering
+  function initCharts() {
+    const platformChartCanvas = document.getElementById('platform-chart');
+    
+    if (platformChartCanvas) {
+      const platformCtx = platformChartCanvas.getContext('2d');
+      
+      // Chart data from our survey
+      const platformData = {
+        labels: ['YouTube', 'TikTok', 'Snapchat', 'Instagram', 'Facebook', 'Discord', 'Twitter/X'],
+        datasets: [{
+          label: 'Teen Platform Usage 2023 (%)',
+          data: [93, 63, 60, 59, 33, 28, 20],
+          backgroundColor: [
+            'rgba(255, 0, 0, 0.7)',      // YouTube red
+            'rgba(0, 0, 0, 0.7)',         // TikTok dark
+            'rgba(255, 252, 0, 0.7)',     // Snapchat yellow
+            'rgba(131, 58, 180, 0.7)',    // Instagram purple
+            'rgba(59, 89, 152, 0.7)',     // Facebook blue
+            'rgba(114, 137, 218, 0.7)',   // Discord blurple
+            'rgba(29, 161, 242, 0.7)'     // Twitter blue
+          ],
+          borderColor: [
+            'rgba(255, 0, 0, 1)',
+            'rgba(0, 0, 0, 1)',
+            'rgba(255, 252, 0, 1)',
+            'rgba(131, 58, 180, 1)',
+            'rgba(59, 89, 152, 1)',
+            'rgba(114, 137, 218, 1)',
+            'rgba(29, 161, 242, 1)'
+          ],
+          borderWidth: 1
+        }]
+      };
+      
+      // Chart options
+      const platformOptions = {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%';
+              }
+            }
           }
-        } else {
-          modalSource.innerHTML = '';
-        }
-        
-        statModal.style.display = 'flex';
-      }
-    });
-  });
-  
-  closeModal.addEventListener('click', function() {
-    statModal.style.display = 'none';
-  });
-  
-  window.addEventListener('click', function(event) {
-    if (event.target === statModal) {
-      statModal.style.display = 'none';
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.parsed.y + '% of teens';
+              }
+            }
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      };
+      
+      // Create chart
+      new Chart(platformCtx, {
+        type: 'bar',
+        data: platformData,
+        options: platformOptions
+      });
     }
-  });
-  
-  function findCitationKey(text) {
-    // Simple matching to find the most relevant citation key
-    for (const key in sourceCitations) {
-      if (text.includes(key) || key.includes(text)) {
-        return key;
-      }
-    }
-    return "general";
+    
+    // Other charts can be added here
   }
   
-  // Charts Initialization
+  // Initialize revenue bars with animation
+  function initRevenueBars() {
+    const revenueBars = document.querySelectorAll('.revenue-value');
+    if (revenueBars.length > 0) {
+      revenueBars.forEach(bar => {
+        const targetWidth = bar.getAttribute('data-width');
+        if (targetWidth) {
+          setTimeout(() => {
+            bar.style.width = targetWidth;
+          }, 500);
+        }
+      });
+    }
+  }
+  
+  // Add interactive elements to the experience sections
+  function enhanceExperienceSection() {
+    // Original experience opportunity section
+    const expSection = document.querySelector('.experience-opportunity');
+    if (expSection) {
+      expSection.addEventListener('click', () => {
+        createSparkleEffect(expSection);
+      });
+    }
+    
+    // New experience examples
+    const expExamples = document.querySelectorAll('.experience-example');
+    if (expExamples.length > 0) {
+      expExamples.forEach(example => {
+        example.addEventListener('mouseenter', () => {
+          createSparkleEffect(example);
+        });
+      });
+    }
+    
+    // Make stat highlights interactive
+    const statHighlights = document.querySelectorAll('.stat-highlight');
+    if (statHighlights.length > 0) {
+      statHighlights.forEach(stat => {
+        stat.addEventListener('click', () => {
+          createSparkleEffect(stat);
+        });
+      });
+    }
+  }
+  
+  // Add click effects to recommendation cards
+  function enhanceRecommendations() {
+    const recommendationCards = document.querySelectorAll('.recommendation-card');
+    if (recommendationCards.length > 0) {
+      recommendationCards.forEach(card => {
+        card.addEventListener('click', () => {
+          createSparkleEffect(card);
+          
+          // Add a subtle pulse animation
+          card.classList.add('pulse-animation');
+          setTimeout(() => {
+            card.classList.remove('pulse-animation');
+          }, 800);
+        });
+      });
+    }
+  }
+  
+  // Add floating effect to Disney logo
+  function enhanceDisneyLogo() {
+    const disneyLogo = document.querySelector('.disney-logo');
+    if (disneyLogo) {
+      disneyLogo.addEventListener('mouseenter', () => {
+        createSparkleEffect(disneyLogo);
+      });
+    }
+  }
+  
+  // Initialize napkin animation
+  function initNapkinAnimation() {
+    const napkinWritings = document.querySelectorAll('.napkin-writing');
+    if (napkinWritings.length > 0) {
+      napkinWritings.forEach(writing => {
+        // Animation happens via CSS, but we could add more interactivity here
+      });
+    }
+  }
+  
+  // Initialize everything and show first slide
+  showSlide(currentSlideIndex);
   initCharts();
+  initRevenueBars();
+  enhanceExperienceSection();
+  enhanceRecommendations();
+  enhanceDisneyLogo();
+  initNapkinAnimation();
+  
+  // For demo purposes, add some sparkles on page load
+  setTimeout(() => {
+    const title = document.querySelector('h1');
+    if (title) createSparkleEffect(title);
+  }, 1000);
 });
 
 // Source citations

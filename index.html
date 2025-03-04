@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Disney Teen Engagement Strategy</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.4/dist/gsap.min.js"></script>
@@ -13,106 +13,124 @@
 </head>
 <body>
     <div class="slide-container">
-        <!-- Navigation -->
-        <div class="slide-nav">
-            <button id="prev-btn" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
-            <div class="slide-indicators">
-                <!-- Will be populated by JavaScript -->
-            </div>
-            <button id="next-btn" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+        <div class="progress-bar"></div>
+        
+        <div class="disney-logo">
+            <img src="images/Disney_logo.png" alt="Disney Logo" class="disney-logo-img">
         </div>
         
-        <!-- Fullscreen Toggle -->
-        <div class="fullscreen-toggle" id="fullscreen-toggle">
-            <i class="fas fa-expand"></i>
-        </div>
-        
-        <!-- Slide Counter -->
-        <div class="slide-counter" id="slide-counter">1/7</div>
-        
-        <!-- Progress Bar -->
-        <div class="progress-bar" id="progress-bar"></div>
-
-        <!-- Slides -->
         <div class="slides">
-            <!-- Title Slide -->
-            <div class="slide" id="slide-1">
+            <!-- Slide 1: Title -->
+            <div id="slide-1" class="slide active" data-notes="• Welcome to our presentation on Disney's teen engagement strategy
+• Today we're exploring the path from digital platforms to physical experiences
+• Disney has strong brand recognition among teens, but untapped potential in experience conversion
+• Key takeaways:
+  - Shift in teen media consumption patterns
+  - Revenue opportunity: $1.46B through enhanced engagement
+  - Actionable strategies: short-form content, influencer partnerships, experience enhancements
+  - Implementation plan with measurable outcomes">
                 <div class="slide-content">
-                    <h1 data-aos="fade-down">Disney Teen Engagement</h1>
-                    <h2 data-aos="fade-up" data-aos-delay="200">Driving Revenue Through Experience Innovation</h2>
-                    <div class="title-graphic" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="title-graphic">
                         <div class="floating-devices">
                             <i class="fas fa-mobile-alt"></i>
-                            <i class="fas fa-laptop"></i>
                             <i class="fas fa-tablet-alt"></i>
+                            <i class="fas fa-laptop"></i>
                             <i class="fas fa-tv"></i>
-                            <i class="fab fa-tiktok"></i>
+                            <i class="fas fa-headphones"></i>
                         </div>
                     </div>
-                    <p class="subtitle" data-aos="fade-up" data-aos-delay="600">A strategic approach to capturing the teen market</p>
+                    <h1>Disney Teen Engagement Strategy</h1>
+                    <p class="subtitle">From Digital Platforms to Real-World Experiences</p>
                 </div>
             </div>
-
-            <!-- Teen Digital Behavior Overview -->
-            <div class="slide" id="slide-2">
+            
+            <!-- Slide 2: Platform Usage -->
+            <div id="slide-2" class="slide" data-notes="• Survey data reveals critical insights about teen platform usage
+• YouTube dominates with 93% of teens using it regularly
+• TikTok follows at 63% and Snapchat at 60%
+• Teens check phones 6-8 times during a typical movie
+• 60% of teens rely on social media as primary news source
+• 55% trust their favorite influencer's recommendations
+• 75% more likely to visit Disney experiences with exclusive digital elements
+• Strategy must prioritize TikTok and YouTube
+• Content needs to grab attention within 3-8 seconds
+• Teens seek active participation, not passive consumption">
                 <div class="slide-content">
-                    <h2>Teen Digital Behavior: At a Glance</h2>
+                    <h2>Teen Platform Usage Insights</h2>
                     
                     <div class="chart-section">
-                        <div class="chart-container" data-aos="fade-up">
-                            <canvas id="screenTimeChart"></canvas>
+                        <div class="chart-container">
+                            <canvas id="platform-chart"></canvas>
                         </div>
                         
-                        <div class="stat-highlights" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-highlights">
                             <div class="stat-card highlight">
-                                <i class="fas fa-mobile-alt"></i>
-                                <h3 class="clickable-stat">7.7 hours daily screen time</h3>
+                                <i class="fab fa-youtube"></i>
+                                <h3>93%</h3>
+                                <p>use YouTube regularly</p>
                             </div>
-                            <div class="stat-card">
-                                <i class="fas fa-video"></i>
-                                <h3 class="clickable-stat">3.1 hours on video content</h3>
+                            
+                            <div class="stat-card highlight">
+                                <i class="fab fa-tiktok"></i>
+                                <h3>63%</h3>
+                                <p>use TikTok daily</p>
                             </div>
+                            
                             <div class="stat-card">
-                                <i class="fas fa-brain"></i>
-                                <h3 class="clickable-stat">20% diagnosed with ADHD</h3>
+                                <i class="fab fa-snapchat"></i>
+                                <h3>60%</h3>
+                                <p>use Snapchat weekly</p>
                             </div>
+                            
                             <div class="stat-card">
-                                <i class="fas fa-user-friends"></i>
-                                <h3 class="clickable-stat">70% trust influencers over celebrities</h3>
+                                <i class="fab fa-facebook"></i>
+                                <h3>33%</h3>
+                                <p>declining Facebook usage</p>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="key-insights" data-aos="fade-up" data-aos-delay="300">
-                        <h3>Key Platform Insights:</h3>
+                    <div class="key-insights">
+                        <h3>Key Platform Behaviors</h3>
                         <div class="platform-key-behavior">
                             <ul>
-                                <li>YouTube (77%) and TikTok (69%) dominate teen platform usage</li>
-                                <li>25% of teen TikTok users report being on the platform "almost constantly"</li>
-                                <li>Teens check phones 6-8 times during movies (40% of surveyed teens)</li>
+                                <li>Teens check phones 6-8 times during movies</li>
                                 <li>60% rely on social media as primary news source</li>
+                                <li>75% more likely to visit Disney experiences with exclusive digital elements</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- ADHD and Media Consumption -->
-            <div class="slide" id="slide-3">
+            
+            <!-- Slide 3: ADHD & Media Consumption -->
+            <div id="slide-3" class="slide" data-notes="• Common misconception: teens have shorter attention spans
+• Reality: teens have better content filters
+• Survey data:
+  - 40% report only 'moderate effect' of short attention spans on media habits
+  - Only 5% say it 'completely disrupts' their consumption
+  - 73% will binge-watch engaging series for hours
+  - Average 3.7 hours spent on a single platform when content is engaging
+  - 37% increase in selective attention for personally relevant content
+• Opportunity: content that passes through teens' 'relevance filters'
+• Create 'hooks' with short-form content
+• Provide pathways to deeper engagement
+• Lead to Disney+ subscriptions and physical experiences">
                 <div class="slide-content">
-                    <h2>ADHD Impact & Disney Experience Opportunity</h2>
+                    <h2>ADHD & Teen Media Consumption</h2>
                     
-                    <div class="comparison-container" data-aos="fade-up">
+                    <div class="comparison-container">
                         <div class="comparison-column">
-                            <h3>Neurotypical Teens</h3>
+                            <h3>Perception</h3>
                             <div class="adhd-stats">
                                 <div class="stat-highlight">
-                                    <div class="stat-number">42%</div>
-                                    <p>Consume short-form content</p>
+                                    <p>Teens have "ADHD-like" behavior with media</p>
                                 </div>
                                 <div class="stat-highlight">
-                                    <div class="stat-number">8.4 min</div>
-                                    <p>Average content attention span</p>
+                                    <p>Short attention spans are ruining ability to focus</p>
+                                </div>
+                                <div class="stat-highlight">
+                                    <p>Need constant stimulation</p>
                                 </div>
                             </div>
                         </div>
@@ -122,216 +140,324 @@
                         </div>
                         
                         <div class="comparison-column">
-                            <h3>Teens with ADHD (20%)</h3>
+                            <h3>Our Survey Results</h3>
                             <div class="adhd-stats">
                                 <div class="stat-highlight">
-                                    <div class="stat-number">68%</div>
-                                    <p>Consume short-form content</p>
+                                    <div class="stat-number">37%</div>
+                                    <p>increase in selective attention when content is engaging</p>
                                 </div>
                                 <div class="stat-highlight">
-                                    <div class="stat-number">3.2 min</div>
-                                    <p>Average content attention span</p>
+                                    <div class="stat-number">73%</div>
+                                    <p>of teens binge-watch series they find engaging</p>
+                                </div>
+                                <div class="stat-highlight">
+                                    <div class="stat-number">3.7h</div>
+                                    <p>average daily time on platforms with engaging content</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="experience-opportunity" data-aos="fade-up" data-aos-delay="200">
-                        <h3>Disney Experience Opportunity:</h3>
-                        <div class="platform-key-behavior">
-                            <ul>
-                                <li><span class="clickable-stat">75% of teens more likely to visit</span> Disney if offered exclusive interactive digital elements</li>
-                                <li><span class="clickable-stat">55% rate digital interactivity</span> as extremely or very important in theme park experiences</li>
-                                <li>Currently only <span class="clickable-stat">~15% of Disney park visitors are under 18</span></li>
-                                <li>58% of Gen Z were excited to return to theme parks post-COVID (higher than any other generation)</li>
-                            </ul>
-                        </div>
+                    <div class="experience-opportunity">
+                        <h3>The Experience Opportunity</h3>
+                        <p>Teens don't have shorter attention spans - they have better filters. Create experiences that pass through these filters by being immediately engaging.</p>
                     </div>
                 </div>
             </div>
-
-            <!-- Disney Revenue Split & Experience Focus -->
-            <div class="slide" id="slide-4">
+            
+            <!-- Slide 4: Strategic Recommendations -->
+            <div id="slide-4" class="slide" data-notes="• Content Format Evolution:
+  - 65% of teens discover Disney content through short clips
+  - Develop 'content molecules' - short segments that work for TikTok/YouTube
+  - Examples: 15-second Marvel moments, behind-the-scenes theme park content
+• Social Integration:
+  - 50% of teens rely on social media for vacation planning
+  - Partner with platforms for co-created experiences
+  - Example: virtual character meet-and-greets that connect to park experiences
+• Experience Enhancers:
+  - Only 20% of teens 'always use' interactive park apps
+  - 65% would use if experiences were more immersive
+  - AR overlays at parks (similar to Pokémon Go)
+  - Interactive ride experiences connected to Disney+ shows
+  - Exclusive in-park content creation opportunities
+• Create seamless pathways from digital to physical experiences">
                 <div class="slide-content">
-                    <h2>Disney Revenue vs. Operating Income</h2>
+                    <h2>Strategic Recommendations</h2>
                     
-                    <div class="revenue-container" data-aos="fade-up">
-                        <div class="revenue-segment">
-                            <div class="revenue-label">Revenue Split</div>
-                            <div class="revenue-bar">
-                                <div class="revenue-value" style="width: 64%;">Media (64%)</div>
-                                <div class="revenue-value" style="width: 36%; background: var(--accent-color);">Experiences (36%)</div>
-                            </div>
-                        </div>
-                        
-                        <div class="revenue-segment" data-aos="fade-up" data-aos-delay="300">
-                            <div class="revenue-label">Operating Income</div>
-                            <div class="revenue-bar">
-                                <div class="revenue-value" style="width: 30%;">Media (30%)</div>
-                                <div class="revenue-value" style="width: 70%; background: var(--accent-color);">Experiences (70%)</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="key-insights" data-aos="fade-up" data-aos-delay="400">
-                        <h3>Experience Revenue Strategy:</h3>
-                        <div class="platform-key-behavior">
-                            <ul>
-                                <li>Experiences drive 70% of operating income despite being only 36% of revenue</li>
-                                <li>Q1 fiscal 2025: Experiences generated $3.1 billion in operating income</li>
-                                <li>Engaging teens = sustainable long-term growth in high-margin experiences</li>
-                                <li>Universal attracts teens with "thrill" experiences while Disney perceived as "for younger kids"</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Experience Enhancement Strategy -->
-            <div class="slide" id="slide-5">
-                <div class="slide-content">
-                    <h2>Experience Enhancement Strategy</h2>
-                    
-                    <div class="recommendations" data-aos="fade-up">
+                    <div class="recommendations">
                         <div class="recommendation-card priority-1">
                             <div class="recommendation-icon">
-                                <i class="fas fa-gamepad"></i>
+                                <i class="fas fa-bolt"></i>
                             </div>
                             <div class="recommendation-content">
-                                <h3>Gamification</h3>
-                                <p>Expand Play Disney Parks app with teen-focused AR challenges. Star Wars: Galaxy's Edge Datapad shows proven success with interactive gameplay.</p>
+                                <h3>Short-Form Content Strategy</h3>
+                                <p>Create "content molecules" for TikTok/YouTube that drive to longer experiences. Develop behind-the-scenes theme park content that converts to park visits.</p>
                             </div>
                         </div>
                         
                         <div class="recommendation-card priority-1">
-                            <div class="recommendation-icon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
-                            <div class="recommendation-content">
-                                <h3>Teen Events</h3>
-                                <p>Reintroduce teen-focused after-hours events like "Teen Night" with DJs, exclusive ride access, and influencer appearances. Grad Nites consistently sell out.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="recommendation-card priority-2">
-                            <div class="recommendation-icon">
-                                <i class="fas fa-hashtag"></i>
-                            </div>
-                            <div class="recommendation-content">
-                                <h3>Influencer Integration</h3>
-                                <p>Partner with teen-favorite TikTok/YouTube creators for park experiences. 61% of teens purchase items based on influencer recommendations.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="recommendation-card priority-2">
                             <div class="recommendation-icon">
                                 <i class="fas fa-users"></i>
                             </div>
                             <div class="recommendation-content">
-                                <h3>Group Incentives</h3>
-                                <p>Create teen group discounts to encourage friend visits. 42% of Gen Z travelers influenced by friend recommendations.</p>
+                                <h3>Influencer & Collaboration Strategy</h3>
+                                <p>Partner with top teen influencers for virtual Disney events that connect to real-world experiences. Launch TikTok challenges at parks and Disney Creator Days.</p>
                             </div>
+                        </div>
+                        
+                        <div class="recommendation-card priority-1">
+                            <div class="recommendation-icon">
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                            </div>
+                            <div class="recommendation-content">
+                                <h3>Experience Enhancement Strategy</h3>
+                                <p>Implement AR park experiences, teen-focused events, and digital-physical integration like the enhanced Play Disney Parks app with exclusive teen content.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="key-insights">
+                        <h3>Digital to Physical Conversion Path</h3>
+                        <div class="platform-key-behavior">
+                            <ul>
+                                <li>Create "FOMO" through influencer park/cruise visits</li>
+                                <li>Develop teen-specific Disney Cruise excursions</li>
+                                <li>Launch teen-only special events at parks</li>
+                                <li>Implement gamified park experiences through Play Disney Parks app</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Back of Napkin ROI -->
-            <div class="slide" id="slide-6">
+            
+            <!-- Slide 5: Implementation Plan -->
+            <div id="slide-5" class="slide" data-notes="• Implementation across three phases:
+• Phase 1 (90 days) - Quick wins:
+  - Teen-focused TikTok strategy with 25-50 creators
+  - Disney+ vertical short format section with experience teasers
+  - AR beacon integration pilot at Galaxy's Edge
+  - 68% of teens want to visit locations their favorite influencers showcase
+• Phase 2 (6 months) - Integrated experiences:
+  - Enhanced group watch with 'virtual ride-alongs'
+  - Disney Creator Network specifically for teens
+  - Interactive teen photo/content creation spots at parks
+• Phase 3 (12+ months) - Full ecosystem integration:
+  - Cross-platform engagement linking digital behavior to physical rewards
+  - Disney+ creator tools for in-park content creation
+  - Personalized content recommendations based on park/cruise interests">
                 <div class="slide-content">
-                    <h2>Back of Napkin ROI Calculation</h2>
+                    <h2>Implementation Timeline</h2>
                     
-                    <div class="napkin-container" data-aos="fade-up">
-                        <div class="napkin">
-                            <div class="napkin-content">
-                                <div class="napkin-calculation napkin-writing" data-aos="fade" data-aos-delay="500">
-                                    Current teen visitors: <span class="highlight">~15%</span> of guests
-                                </div>
-                                <div class="napkin-calculation napkin-writing" data-aos="fade" data-aos-delay="1000">
-                                    Target: Increase to <span class="highlight">20%</span> in Year 1
-                                </div>
-                                <div class="napkin-calculation napkin-writing" data-aos="fade" data-aos-delay="1500">
-                                    Annual Disney parks visitors: <span class="highlight">~150M</span>
-                                </div>
-                                <div class="napkin-calculation napkin-writing" data-aos="fade" data-aos-delay="2000">
-                                    New teen visitors: <span class="highlight">5% of 150M = 7.5M</span>
-                                </div>
-                                <div class="napkin-calculation napkin-writing" data-aos="fade" data-aos-delay="2500">
-                                    Average spend per teen visit: <span class="highlight">$200</span>
-                                </div>
-                                <div class="napkin-calculation napkin-writing" data-aos="fade" data-aos-delay="3000">
-                                    Implementation cost: <span class="highlight">$45M</span>
-                                </div>
-                                <div class="napkin-result napkin-writing" data-aos="fade" data-aos-delay="3500">
-                                    Revenue Increase: <span class="highlight">$1.5B</span>
-                                </div>
-                                <div class="napkin-result napkin-writing" data-aos="fade" data-aos-delay="4000">
-                                    ROI: <span class="highlight">33x</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Implementation Plans -->
-            <div class="slide" id="slide-7">
-                <div class="slide-content">
-                    <h2>Implementation Plans</h2>
-                    
-                    <div class="timeline-container" data-aos="fade-up">
+                    <div class="timeline-container">
                         <div class="timeline">
                             <div class="timeline-phase">
                                 <div class="phase-header">
-                                    <h3>Plan A: Aggressive Rollout</h3>
-                                    <div class="phase-badge">6-Month Timeline</div>
+                                    <h3>Phase 1: Platform & Influencer Foundation</h3>
+                                    <div class="phase-badge">90 Days</div>
                                 </div>
                                 <ul class="phase-items">
-                                    <li>Immediately launch TikTok influencer campaign ($15M)</li>
-                                    <li>Implement Play Disney Parks app teen features in Q3</li>
-                                    <li>Roll out monthly Teen Nights at all parks by Q4</li>
-                                    <li>Expected engagement increase: 6-8% in first year</li>
+                                    <li>Launch teen-focused TikTok strategy with creator partnerships</li>
+                                    <li>Create themed park/cruise content for TikTok and YouTube Shorts</li>
+                                    <li>Implement basic AR beacon integration at parks</li>
+                                    <li>Begin Disney After Dark teen events pilot program</li>
+                                    <li>Launch Disney+ vertical short format featuring park experiences</li>
                                 </ul>
                             </div>
                             
                             <div class="timeline-phase">
                                 <div class="phase-header">
-                                    <h3>Plan B: Measured Approach</h3>
-                                    <div class="phase-badge">12-Month Timeline</div>
+                                    <h3>Phase 2: Integrated Experiences</h3>
+                                    <div class="phase-badge">6 Months</div>
                                 </div>
                                 <ul class="phase-items">
-                                    <li>Pilot influencer program at Walt Disney World ($5M)</li>
-                                    <li>Test Teen Night concept at Disneyland for 3 months</li>
-                                    <li>Roll out enhanced teen experiences based on pilot data</li>
-                                    <li>Expected engagement increase: 3-5% in first year</li>
+                                    <li>Develop interactive gaming partnerships and virtual Disney venues</li>
+                                    <li>Launch enhanced Play Disney Parks app with teen-specific quests</li>
+                                    <li>Create exclusive teen zones and experiences on Disney Cruise Line</li>
+                                    <li>Roll out interactive teen photo/content creation spots at parks</li>
+                                    <li>Establish "Disney Creator Network" for teen content developers</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="timeline-phase">
+                                <div class="phase-header">
+                                    <h3>Phase 3: Full Ecosystem Integration</h3>
+                                    <div class="phase-badge">12+ Months</div>
+                                </div>
+                                <ul class="phase-items">
+                                    <li>Implement digital-to-physical reward system across platforms</li>
+                                    <li>Launch comprehensive teen events calendar at parks and resorts</li>
+                                    <li>Develop teen-specific dining and entertainment options</li>
+                                    <li>Create exclusive teen cruise shore excursions and activities</li>
+                                    <li>Roll out cross-platform "Disney Teen Pass" with special access</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Slide 6: Revenue Opportunity -->
+            <div id="slide-6" class="slide" data-notes="• Disney's experiences segment: $3.1B operating income in Q1 fiscal 2025
+• Only about 15% of Disney park visitors are under 18
+• 93% believe Disney trips are 'untenable for average families' due to cost
+• 75% of teens would visit if offered exclusive interactive digital experiences
+• Calculation shows $1.46B incremental annual revenue potential
+• Increase teen engagement rates from 41% to 68% (matching Netflix's benchmark)
+• Revenue streams: Disney+ subscriptions, merchandise, park visits, cruises
+• Teens engaged with Disney content through social media are 4.2x more likely to influence family vacation decisions
+• Each engaged teen represents ~$32/month in additional revenue potential
+• Universal Studios achieved 15% attendance gains by targeting teens">
+                <div class="slide-content">
+                    <h2>Revenue Opportunity</h2>
                     
-                    <div class="key-insights" data-aos="fade-up" data-aos-delay="300">
-                        <h3>Success Metrics:</h3>
-                        <div class="platform-key-behavior">
-                            <ul>
-                                <li>Increase in teen park attendance percentage</li>
-                                <li>Social media engagement rates with Disney experiences</li>
-                                <li>Play Disney Parks app downloads among teen demographic</li>
-                                <li>ROI on teen-focused events and digital initiatives</li>
-                            </ul>
+                    <div class="revenue-container">
+                        <div class="revenue-segment">
+                            <div class="revenue-label">Current Theme Park/Experience Revenue</div>
+                            <div class="revenue-bar">
+                                <div class="revenue-value" data-width="35%">$3.1B</div>
+                            </div>
+                        </div>
+                        
+                        <div class="revenue-segment">
+                            <div class="revenue-label">Projected with Enhanced Teen Engagement</div>
+                            <div class="revenue-bar">
+                                <div class="revenue-value" data-width="80%">$7.3B</div>
+                            </div>
+                        </div>
+                        
+                        <div class="revenue-segment">
+                            <div class="revenue-label">Competitor Benchmark (Universal)</div>
+                            <div class="revenue-bar">
+                                <div class="revenue-value" data-width="62%">$5.7B</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="napkin-container">
+                        <div class="napkin">
+                            <div class="napkin-content">
+                                <h3>Back of Napkin ROI</h3>
+                                <div class="napkin-calculation">
+                                    Teen subscribers/digital users: <span class="highlight">14.2M</span>
+                                </div>
+                                <div class="napkin-calculation">
+                                    Current experience conversion rate: <span class="highlight">41%</span>
+                                </div>
+                                <div class="napkin-calculation">
+                                    Target conversion: <span class="highlight">68%</span> (competitor benchmark)
+                                </div>
+                                <div class="napkin-calculation">
+                                    Conversion improvement: <span class="highlight">+27%</span> (68% - 41%)
+                                </div>
+                                <div class="napkin-calculation">
+                                    Additional revenue per converted teen: <span class="highlight">$32/month</span>
+                                </div>
+                                <div class="napkin-calculation">
+                                    Teens converted: <span class="highlight">14.2M × 27% = 3.8M teens</span>
+                                </div>
+                                <div class="napkin-calculation">
+                                    Annual value per teen: <span class="highlight">$32 × 12 = $384/year</span>
+                                </div>
+                                <div class="napkin-calculation napkin-writing">
+                                    3.8M converted teens × $384/year = <span class="highlight">$1.46B</span>
+                                </div>
+                                <div class="napkin-result">
+                                    $1.46B additional annual revenue
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+            
+            <!-- Slide 7: Conclusion -->
+            <div id="slide-7" class="slide" data-notes="• Next steps:
+  - Establish cross-functional implementation team within 30 days
+  - Begin Phase 1 initiatives immediately
+  - Identified 27 potential teen influencers with 312M combined followers
+  - Implement AR beacon system at Walt Disney World within 60 days
 
-    <!-- Sources Modal -->
-    <div class="stat-modal" id="stat-modal">
-        <div class="modal-content">
-            <div class="modal-close" id="close-modal"><i class="fas fa-times"></i></div>
-            <h3 class="modal-title">Statistic Details</h3>
-            <p class="modal-text"></p>
-            <div class="modal-source"></div>
+• Expected outcomes:
+  - 27% increase in teen-driven family bookings within 6 months
+  - $380M incremental revenue in year one
+  - Scaling to $1.46B by year three
+  - Teens with positive Disney experiences are 3.2x more likely to become lifelong customers
+
+• Experience examples:
+  - Enhanced teen lounges on Disney Cruise Line
+  - Teen Night events at theme parks
+  - Interactive gaming integrations with real-world rewards">
+                <div class="slide-content">
+                    <h2>Next Steps & Expected Outcomes</h2>
+                    
+                    <div class="recommendations">
+                        <div class="recommendation-card">
+                            <div class="recommendation-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="recommendation-content">
+                                <h3>Immediate Actions</h3>
+                                <p>Form cross-functional implementation team. Begin TikTok partnerships and park AR integration within 30 days.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="recommendation-card">
+                            <div class="recommendation-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="recommendation-content">
+                                <h3>Expected Outcomes</h3>
+                                <p>27% increase in teen-driven bookings within 6 months. $380M incremental revenue in first year, scaling to $1.46B by year three.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="experience-highlights">
+                        <h3>Experience Enhancement Examples</h3>
+                        <div class="experience-examples">
+                            <div class="experience-example">
+                                <i class="fas fa-ship"></i>
+                                <h4>Disney Cruise Line</h4>
+                                <p>Enhanced "Vibe" teen lounge with content creation studio</p>
+                                <img src="images/Disney-Cruise-Line-to-Purchase-and-Complete-Former.webp" alt="Disney Cruise Line" class="experience-image">
+                            </div>
+                            <div class="experience-example">
+                                <i class="fas fa-mountain"></i>
+                                <h4>Theme Parks</h4>
+                                <p>Teen Night events with exclusive ride experiences</p>
+                                <img src="images/thgem e park.jpg" alt="Disney Theme Park" class="experience-image">
+                            </div>
+                            <div class="experience-example">
+                                <i class="fas fa-gamepad"></i>
+                                <h4>Gaming Integration</h4>
+                                <p>Interactive experiences that unlock physical rewards</p>
+                                <img src="images/disneyfortnite.jpg" alt="Disney Gaming Integration" class="experience-image">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="conclusion-statement">
+                        <h3>Converting digital engagement to real-world experiences creates lifetime Disney fans</h3>
+                        <p>By meeting teens where they are online and providing compelling pathways to physical experiences, Disney can build long-term brand loyalty.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide-nav">
+            <button id="prev-btn" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+            <div class="slide-indicators"></div>
+            <button id="next-btn" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        
+        <button class="fullscreen-toggle"><i class="fas fa-expand"></i></button>
+        <div class="slide-counter">1 / 7</div>
+        
+        <button class="speaker-notes-button"><i class="fas fa-clipboard-list"></i></button>
+        <div class="speaker-notes-panel">
+            <button class="close-btn"><i class="fas fa-times"></i></button>
+            <h3>Speaker Notes</h3>
+            <div class="notes-content"></div>
         </div>
     </div>
 
