@@ -1,0 +1,15 @@
+{
+  "name": "disney-presentation",
+  "version": "1.0.0",
+  "description": "An interactive web-based slide presentation that visualizes data on teen digital habits and strategic recommendations for Disney's engagement with the 13-18 demographic.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gsap": "^3.12.7"
+  }
+}
