@@ -10,6 +10,7 @@ This is an interactive slideshow presentation analyzing teen digital engagement 
 - Clickable statistics with source information
 - Fullscreen presentation mode
 - Disney-inspired styling and animations
+- **Speaker Notes**: Now formatted as full scripts for a more narrative presentation style
 
 ## Navigation
 
