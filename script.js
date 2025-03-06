@@ -1,11 +1,11 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
   // Initialize AOS
   AOS.init({
     duration: 800,
     easing: 'ease-in-out',
     once: true
   });
-
+  
   // DOM Elements
   const slides = document.querySelectorAll('.slide');
   const prevBtn = document.getElementById('prev-btn');
@@ -16,53 +16,53 @@ document.addEventListener('DOMContentLoaded', function () {
   const speakerNotesButton = document.querySelector('.speaker-notes-button');
   const speakerNotesPanel = document.querySelector('.speaker-notes-panel');
   const speakerNotesCloseBtn = document.querySelector('.speaker-notes-panel .close-btn');
-
+  
   // State
   let currentSlideIndex = 0;
   const totalSlides = slides.length;
-
+  
   // Initialize Slide Indicators
   const slideIndicatorsContainer = document.querySelector('.slide-indicators');
   if (slideIndicatorsContainer) {
-    for (let i = 0; i < totalSlides; i++) {
-      const indicator = document.createElement('div');
-      indicator.classList.add('indicator');
-      if (i === 0) indicator.classList.add('active');
-      indicator.addEventListener('click', () => goToSlide(i));
+  for (let i = 0; i < totalSlides; i++) {
+    const indicator = document.createElement('div');
+    indicator.classList.add('indicator');
+    if (i === 0) indicator.classList.add('active');
+    indicator.addEventListener('click', () => goToSlide(i));
       slideIndicatorsContainer.appendChild(indicator);
     }
   }
-
+  
   // Functions
   function showSlide(index) {
     // Hide all slides
     slides.forEach(slide => {
       slide.classList.remove('active');
     });
-
+    
     // Show the current slide
     slides[index].classList.add('active');
-
+    
     // Update indicators
     const indicators = document.querySelectorAll('.indicator');
     if (indicators.length > 0) {
       indicators.forEach(ind => ind.classList.remove('active'));
       indicators[index].classList.add('active');
     }
-
+    
     // Update progress bar
     const progress = ((index + 1) / totalSlides) * 100;
     progressBar.style.width = `${progress}%`;
-
+    
     // Update slide counter
     if (slideCounter) {
       slideCounter.textContent = `${index + 1} / ${totalSlides}`;
     }
-
+    
     // Update speaker notes
     updateSpeakerNotes(index);
   }
-
+  
   function goToSlide(index) {
     // Handle out of bounds
     if (index < 0) {
@@ -72,20 +72,20 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       currentSlideIndex = index;
     }
-
+    
     showSlide(currentSlideIndex);
   }
-
+  
   function nextSlide() {
     goToSlide(currentSlideIndex + 1);
     createSparkleEffect(nextBtn);
   }
-
+  
   function prevSlide() {
     goToSlide(currentSlideIndex - 1);
     createSparkleEffect(prevBtn);
   }
-
+  
   function updateSpeakerNotes(slideIndex) {
     // If speaker notes panel exists
     if (speakerNotesPanel) {
@@ -95,20 +95,53 @@ document.addEventListener('DOMContentLoaded', function () {
         // Try to get notes from current slide
         const currentSlide = slides[slideIndex];
         const slideNotes = currentSlide.getAttribute('data-notes');
-
+        
         if (slideNotes) {
           // Convert to HTML with proper formatting
           let formattedHtml = '';
           const lines = slideNotes.split('\n');
-
+          let scriptContent = [];
+          let additionalInfo = [];
+          let inAdditionalInfo = false;
+          
+          // Process each line
           lines.forEach(line => {
             line = line.trim();
             if (!line) return;
-
-            // Format as full script
-            formattedHtml += `<p>${line}</p>`;
+            
+            // Check if line starts with bullet or dash
+            if (line.startsWith('•') || line.startsWith('-')) {
+              inAdditionalInfo = true;
+              additionalInfo.push(line);
+            } else {
+              if (!inAdditionalInfo) {
+                scriptContent.push(line);
+              } else {
+                additionalInfo.push(line);
+              }
+            }
           });
-
+          
+          // Format script content with paragraph spacing
+          if (scriptContent.length > 0) {
+            scriptContent.forEach(paragraph => {
+              formattedHtml += `<p>${paragraph}</p>`;
+            });
+          }
+          
+          // Add additional info section if there are bullet points
+          if (additionalInfo.length > 0) {
+            formattedHtml += '<p><strong>ADDITIONAL INFO</strong></p><ul>';
+            additionalInfo.forEach(info => {
+              // Remove bullet or dash if present
+              if (info.startsWith('•') || info.startsWith('-')) {
+                info = info.substring(1).trim();
+              }
+              formattedHtml += `<li>${info}</li>`;
+            });
+            formattedHtml += '</ul>';
+          }
+          
           notesContent.innerHTML = formattedHtml;
         } else {
           notesContent.innerHTML = '<p>No speaker notes for this slide.</p>';
@@ -116,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   }
-
+  
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(err => {
@@ -131,62 +164,62 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     createSparkleEffect(fullscreenToggle);
   }
-
+  
   function toggleSpeakerNotes() {
     if (speakerNotesPanel) {
       speakerNotesPanel.classList.toggle('active');
       createSparkleEffect(speakerNotesButton);
     }
   }
-
+  
   function closeSpeakerNotes() {
     if (speakerNotesPanel) {
       speakerNotesPanel.classList.remove('active');
     }
   }
-
+  
   function createSparkleEffect(element) {
     // Create sparkle elements
     const numSparkles = 5;
-
+    
     for (let i = 0; i < numSparkles; i++) {
       const sparkle = document.createElement('div');
       sparkle.classList.add('sparkle');
-
+      
       // Position randomly around the element
       const rect = element.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-
+      
       // Random position in a circle around the element
       const angle = Math.random() * Math.PI * 2;
       const distance = 20 + Math.random() * 30;
       const x = centerX + Math.cos(angle) * distance;
       const y = centerY + Math.sin(angle) * distance;
-
+      
       sparkle.style.left = `${x}px`;
       sparkle.style.top = `${y}px`;
-
+      
       // Add to body
       document.body.appendChild(sparkle);
-
+      
       // Remove after animation completes
       setTimeout(() => {
         sparkle.remove();
       }, 1000);
     }
   }
-
+  
   // Event Listeners
   if (prevBtn) prevBtn.addEventListener('click', prevSlide);
   if (nextBtn) nextBtn.addEventListener('click', nextSlide);
   if (fullscreenToggle) fullscreenToggle.addEventListener('click', toggleFullscreen);
   if (speakerNotesButton) speakerNotesButton.addEventListener('click', toggleSpeakerNotes);
   if (speakerNotesCloseBtn) speakerNotesCloseBtn.addEventListener('click', closeSpeakerNotes);
-
+  
   // Keyboard Navigation
-  document.addEventListener('keydown', function (e) {
-    switch (e.key) {
+  document.addEventListener('keydown', function(e) {
+    switch(e.key) {
       case 'ArrowRight':
       case ' ':
         nextSlide();
@@ -205,21 +238,21 @@ document.addEventListener('DOMContentLoaded', function () {
         break;
     }
   });
-
+  
   // Initialize chart data loading and rendering
   function initCharts() {
     const platformChartCanvas = document.getElementById('platform-chart');
-
+    
     if (platformChartCanvas) {
       const platformCtx = platformChartCanvas.getContext('2d');
-
+      
       // Chart data from our survey
       const platformData = {
         labels: ['YouTube', 'TikTok', 'Snapchat', 'Instagram', 'Facebook', 'Discord', 'Twitter/X'],
-        datasets: [{
+      datasets: [{
           label: 'Teen Platform Usage 2023 (%)',
           data: [93, 63, 60, 59, 33, 28, 20],
-          backgroundColor: [
+        backgroundColor: [
             'rgba(255, 0, 0, 0.7)',      // YouTube red
             'rgba(0, 0, 0, 0.7)',         // TikTok dark
             'rgba(255, 252, 0, 0.7)',     // Snapchat yellow
@@ -240,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function () {
           borderWidth: 1
         }]
       };
-
+      
       // Chart options
       const platformOptions = {
         scales: {
@@ -248,19 +281,19 @@ document.addEventListener('DOMContentLoaded', function () {
             beginAtZero: true,
             max: 100,
             ticks: {
-              callback: function (value) {
+              callback: function(value) {
                 return value + '%';
               }
             }
           }
         },
-        plugins: {
-          legend: {
-            display: false
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
                 return context.parsed.y + '% of teens';
               }
             }
@@ -269,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function () {
         responsive: true,
         maintainAspectRatio: false
       };
-
+      
       // Create chart
       new Chart(platformCtx, {
         type: 'bar',
@@ -277,10 +310,10 @@ document.addEventListener('DOMContentLoaded', function () {
         options: platformOptions
       });
     }
-
+    
     // Other charts can be added here
   }
-
+  
   // Initialize revenue bars with animation
   function initRevenueBars() {
     const revenueBars = document.querySelectorAll('.revenue-value');
@@ -295,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   }
-
+  
   // Add interactive elements to the experience sections
   function enhanceExperienceSection() {
     // Original experience opportunity section
@@ -305,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function () {
         createSparkleEffect(expSection);
       });
     }
-
+    
     // New experience examples
     const expExamples = document.querySelectorAll('.experience-example');
     if (expExamples.length > 0) {
@@ -315,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       });
     }
-
+    
     // Make stat highlights interactive
     const statHighlights = document.querySelectorAll('.stat-highlight');
     if (statHighlights.length > 0) {
@@ -326,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   }
-
+  
   // Add click effects to recommendation cards
   function enhanceRecommendations() {
     const recommendationCards = document.querySelectorAll('.recommendation-card');
@@ -334,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function () {
       recommendationCards.forEach(card => {
         card.addEventListener('click', () => {
           createSparkleEffect(card);
-
+          
           // Add a subtle pulse animation
           card.classList.add('pulse-animation');
           setTimeout(() => {
@@ -344,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   }
-
+  
   // Add floating effect to Disney logo
   function enhanceDisneyLogo() {
     const disneyLogo = document.querySelector('.disney-logo');
@@ -354,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   }
-
+  
   // Initialize napkin animation
   function initNapkinAnimation() {
     const napkinWritings = document.querySelectorAll('.napkin-writing');
@@ -364,7 +397,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   }
-
+  
   // Initialize everything and show first slide
   showSlide(currentSlideIndex);
   initCharts();
@@ -373,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function () {
   enhanceRecommendations();
   enhanceDisneyLogo();
   initNapkinAnimation();
-
+  
   // For demo purposes, add some sparkles on page load
   setTimeout(() => {
     const title = document.querySelector('h1');
@@ -394,7 +427,7 @@ const sourceCitations = {
     source: "Common Sense Media, 2021",
     link: "https://www.commonsensemedia.org/research/the-common-sense-census-media-use-by-tweens-and-teens-2021"
   },
-
+  
   // Platform Usage
   "YouTube (77%)": {
     detail: "77% of teens use YouTube daily, making it the most widely used social platform among 13-18 year olds.",
@@ -406,7 +439,7 @@ const sourceCitations = {
     source: "Pew Research Center, 2022",
     link: "https://www.pewresearch.org/internet/2022/08/10/teens-social-media-and-technology-2022/"
   },
-
+  
   // ADHD
   "20% diagnosed with ADHD": {
     detail: "Approximately 20% of teens today have been diagnosed with ADHD, a significant increase from previous generations.",
@@ -418,7 +451,7 @@ const sourceCitations = {
     source: "finalinfo.md Survey Data",
     link: ""
   },
-
+  
   // Influencers
   "70% trust influencers": {
     detail: "70% of teens trust social media influencers more than traditional celebrities when making purchase decisions or forming opinions.",
@@ -430,7 +463,7 @@ const sourceCitations = {
     source: "finalinfo.md Survey",
     link: ""
   },
-
+  
   // Disney Experience
   "75% of teens more likely to visit": {
     detail: "75% of surveyed teens stated they would be more likely to visit Disney parks if offered exclusive interactive digital elements or experiences.",
@@ -447,14 +480,14 @@ const sourceCitations = {
     source: "ConnollyCove Analysis cited in finalinfo.md",
     link: ""
   },
-
+  
   // Revenue
   "Experiences drive 70%": {
     detail: "While Experiences represent only 36% of Disney's revenue, they generate approximately 70% of the company's operating income, making them disproportionately valuable to profitability.",
     source: "Disney Financial Analysis, Q1 2025",
     link: ""
   },
-
+  
   // General
   "general": {
     detail: "This statistic is based on research compiled for the Disney Teen Engagement Strategy presentation.",
@@ -470,11 +503,11 @@ function initCharts() {
   if (screenTimeCtx) {
     new Chart(screenTimeCtx, {
       type: 'doughnut',
-      data: {
+    data: {
         labels: ['Video Content (3.1 hrs)', 'Gaming (2.1 hrs)', 'Social Media (1.8 hrs)', 'Other (0.7 hrs)'],
-        datasets: [{
+      datasets: [{
           data: [3.1, 2.1, 1.8, 0.7],
-          backgroundColor: [
+        backgroundColor: [
             'rgba(75, 192, 192, 0.8)',
             'rgba(153, 102, 255, 0.8)',
             'rgba(255, 159, 64, 0.8)',
@@ -487,25 +520,25 @@ function initCharts() {
             'rgb(201, 203, 207)'
           ],
           borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              font: {
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            font: {
                 size: 14
               },
               color: '#fff'
-            }
-          },
-          title: {
-            display: true,
+          }
+        },
+        title: {
+          display: true,
             text: 'Teen Daily Screen Time Distribution (7.7 Hours Total)',
-            font: {
+          font: {
               size: 16,
               weight: 'bold'
             },
@@ -514,10 +547,10 @@ function initCharts() {
               top: 10,
               bottom: 20
             }
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
                 const label = context.label || '';
                 const value = context.raw || 0;
                 const percentage = Math.round((value / 7.7) * 100);

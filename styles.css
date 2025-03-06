@@ -894,7 +894,7 @@ p {
 .speaker-notes-button {
   position: absolute;
   bottom: 20px;
-  right: 20px;
+  left: 20px;
   background: linear-gradient(135deg, var(--disney-blue), var(--disney-purple));
   color: white;
   border: none;
@@ -1310,4 +1310,18 @@ p {
 
 .strategy-quadrant:nth-child(4) {
   border-top: 5px solid #52be80;
+}
+
+/* Hide the controls bar that appears on some slides */
+.controls {
+  display: none !important;
+}
+
+/* Keep speaker notes button visible */
+.speaker-notes-button {
+  display: flex !important;
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 20px !important;
+  z-index: 1000 !important;
 } 
